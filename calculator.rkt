@@ -53,8 +53,21 @@
       [else
        (error "Invalid Expression")])))
 
+;; evaluate an expression and make sure nothing is left over
+(define (eval-complete chars)
+  (let* ([answer (eval-expr chars)]
+         [remaining (skip-space (cadr answer))])
+    (if (null? remaining)
+        (car answer)
+        (error "Invalid Expression"))))
+
 ;; quick tests
-(displayln (car (eval-expr (string->list "+ 2 3"))))
-(displayln (car (eval-expr (string->list "* + 2 3 4"))))
-(displayln (car (eval-expr (string->list "- 5"))))
-(displayln (car (eval-expr (string->list "/ 8 2"))))
+(displayln (eval-complete (string->list "+ 2 3")))
+(displayln (eval-complete (string->list "* + 2 3 4")))
+(displayln (eval-complete (string->list "- 5")))
+(displayln (eval-complete (string->list "/ 8 2")))
+
+;; test that extra input is rejected
+(displayln
+ (with-handlers ([exn:fail? (lambda (_) "Rejected invalid expression")])
+   (eval-complete (string->list "+ 2 3 xyz"))))

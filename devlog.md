@@ -28,3 +28,19 @@ For division I used quotient, which performs integer division in Racket. I also 
 
 The calculator is still far from finished. It currently evaluates expressions directly through test calls instead of repeatedly asking the user for input. It also does not have history references yet, and I still need to make sure that leftover characters are rejected. Those are the main things I want to work on next.
 
+
+
+\# 10-23-2026 6:49pm
+
+
+
+I worked on checking that the entire input is a valid expression instead of only evaluating the part that the calculator understands. Before this, the evaluator returned the result and the remaining characters, but nothing was checking whether those remaining characters were actually supposed to be there.
+
+
+
+I added a new function called eval-complete. It calls the existing evaluator and then checks the leftover characters after skipping whitespace. If there is nothing left, it returns the result. Otherwise, it raises an invalid expression error. I kept this separate from `eval-expr so the parsing logic could stay mostly the same.
+
+
+
+I added a test with extra text after a valid expression to check that it gets rejected, along with the earlier arithmetic tests. Next I want to start connecting the evaluator to the actual input loop so the program can read expressions repeatedly instead of only running the test calls.
+
