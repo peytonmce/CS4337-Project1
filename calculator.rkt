@@ -1,3 +1,4 @@
+
 #lang racket
 
 ;; basic prefix calculator
@@ -24,8 +25,8 @@
         (if (null? digits)
             (error "Invalid Expression")
             (let ([index (string->number (list->string digits))])
-              (if (< index (length history))
-                  (list (list-ref history index) left)
+              (if (and (>= index 1) (<= index (length history)))
+                  (list (list-ref history (sub1 index)) left)
                   (error "Invalid Expression"))))))
 
 (define (eval-expr chars history)
@@ -73,17 +74,45 @@
         (car answer)
         (error "Invalid Expression"))))
 
-;; basic tests
-(displayln (eval-complete (string->list "+ 2 3") '()))
-(displayln (eval-complete (string->list "* + 2 3 4") '()))
-(displayln (eval-complete (string->list "- 5") '()))
-(displayln (eval-complete (string->list "/ 8 2") '()))
+;; check whether the program should run in interactive mode
+(define args
+  (vector->list (current-command-line-arguments)))
 
-;; history reference tests
-(displayln (eval-complete (string->list "+ $0 3") '(5)))
-(displayln (eval-complete (string->list "+ $0 $1") '(5 20)))
+(define interactive?
+  (not (or (member "-b" args)
+           (member "--batch" args))))
 
-;; test that extra input is rejected
-(displayln
- (with-handlers ([exn:fail? (lambda (_) "Rejected invalid expression")])
-   (eval-complete (string->list "+ 2 3 xyz") '())))
+;; read and evaluate expressions until quit or end of input
+(define (eval-loop history next-id interactive?)
+  (when interactive?
+    (display "> ")
+    (flush-output))
+
+  (let ([line (read-line)])
+    (cond
+      [(eof-object? line)
+       (void)]
+
+      [(string=? line "quit")
+       (void)]
+
+      [else
+       (let ([result
+              (with-handlers
+                  ([exn:fail?
+                    (lambda (_) 'invalid-expression)])
+                (eval-complete (string->list line) history))])
+         (if (eq? result 'invalid-expression)
+             (begin
+               (displayln "Error: Invalid Expression")
+               (eval-loop history next-id interactive?))
+             (begin
+               (display next-id)
+               (display ": ")
+               (display (real->double-flonum result))
+               (newline)
+               (eval-loop (cons result history)
+                          (add1 next-id)
+                          interactive?))))])))
+
+(eval-loop '() 1 interactive?)

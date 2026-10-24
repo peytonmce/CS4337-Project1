@@ -60,3 +60,19 @@ I also changed eval-expr so it receives the history list as an argument. This le
 
 I added tests for using one previous result and combining two history references in the same expression. I also kept the earlier arithmetic tests to make sure the new changes did not break them. The next step is to connect the evaluator to the main input loop and work on the interactive and batch modes.
 
+
+
+\# # 10-23-2026 9:21pm
+
+
+
+I connected the expression evaluator to a loop that reads input repeatedly. Before this, the program only ran a few test expressions and stopped. Now it reads one line at a time and keeps going until the user enters `quit` or the input ends.
+
+
+
+I also added the history handling to the loop. When an expression works, the result is printed with its history ID and added to the front of the history list using `cons`. The IDs start at 1, while the newest result is at the front of the list, so I had to account for that when looking up `$n` references. If an expression fails, it prints an error and keeps the existing history unchanged.
+
+
+
+I added command-line argument checking for interactive and batch mode. Interactive mode shows a prompt, while batch mode should only print results and errors. I still need to test the different input cases carefully and make sure the output matches the assignment requirements.
+
