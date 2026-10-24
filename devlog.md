@@ -44,3 +44,19 @@ I added a new function called eval-complete. It calls the existing evaluator and
 
 I added a test with extra text after a valid expression to check that it gets rejected, along with the earlier arithmetic tests. Next I want to start connecting the evaluator to the actual input loop so the program can read expressions repeatedly instead of only running the test calls.
 
+
+
+\# 10-23-2026 7:36pm
+
+
+
+I worked on adding history references to the calculator. The idea is that an expression can use a previous result by writing something like $0 instead of typing the number again. I added a function called read-history to read the digits after the dollar sign and use that number as an index into the history list.
+
+
+
+I also changed eval-expr so it receives the history list as an argument. This lets history references work inside larger expressions, instead of only being handled separately. I updated eval-complete to pass the history along as well.
+
+
+
+I added tests for using one previous result and combining two history references in the same expression. I also kept the earlier arithmetic tests to make sure the new changes did not break them. The next step is to connect the evaluator to the main input loop and work on the interactive and batch modes.
+
