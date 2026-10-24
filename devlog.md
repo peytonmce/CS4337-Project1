@@ -76,3 +76,13 @@ I also added the history handling to the loop. When an expression works, the res
 
 I added command-line argument checking for interactive and batch mode. Interactive mode shows a prompt, while batch mode should only print results and errors. I still need to test the different input cases carefully and make sure the output matches the assignment requirements.
 
+
+
+\# 10-23-2026 10:05pm
+
+
+
+Final Entry
+
+I fixed the missing closing parentheses in read-history and the division case so the program could run correctly. I also corrected the $n history lookup to account for the order in which results are stored using cons. I reviewed division behavior and output formatting against the assignment samples, including number formatting, error message capitalization, and handling unexpected trailing characters. Finally, I checked the command-line mode handling for batch execution.
+
