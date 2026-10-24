@@ -86,3 +86,7 @@ Final Entry
 
 I fixed the missing closing parentheses in read-history and the division case so the program could run correctly. I also corrected the $n history lookup to account for the order in which results are stored using cons. I reviewed division behavior and output formatting against the assignment samples, including number formatting, error message capitalization, and handling unexpected trailing characters. Finally, I checked the command-line mode handling for batch execution.
 
+
+
+I also added a README file :D
+
